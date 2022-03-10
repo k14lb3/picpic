@@ -1,10 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import SearchBar from 'components/SearchBar';
-import NavigationButton from 'components/NavigationButton';
-import { HomeIcon, ChatIcon, BellIcon } from '@heroicons/react/outline';
+import Button from 'components/Button';
+import Navigation from './Navigation';
 
 const Header = () => {
+  const user = false;
+
   return (
     <header className="sticky w-full h-16 bg-white shadow-sm x-50">
       <div className="flex justify-between items-center max-w-4xl h-full m-auto px-5">
@@ -33,19 +35,14 @@ const Header = () => {
           </Link>
         </div>
         <SearchBar />
-        <nav className="flex items-center">
-          <NavigationButton href="/" icon={<HomeIcon />} />
-          <NavigationButton icon={<ChatIcon />} />
-          <NavigationButton icon={<BellIcon />} />
-          <div className="group relative flex w-11 h-11 p-2 rounded-full overflow-hidden cursor-pointer ease-in duration-200 hover:scale-90">
-            <div className="absolute w-9 h-9 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full border-solid border-2 border-downy opacity-0 ease-in duration-200 group-hover:opacity-100" />
-            <img
-              className="w-7 h-7 rounded-full ease-in duration-200"
-              src="/doge.jpg"
-              alt=""
-            />
+        {user ? (
+          <Navigation />
+        ) : (
+          <div>
+            <Button className="mr-3">Log In</Button>
+            <Button outlined>Sign Up</Button>
           </div>
-        </nav>
+        )}
       </div>
     </header>
   );
