@@ -7,3 +7,11 @@
     font-family: Roboto, system-ui, sans-serif;
   }
 }
+
+.nav-btn {
+  @apply w-11 h-11 p-2 mr-2 rounded-full ease-in duration-200 cursor-pointer hover:scale-90 hover:bg-downy-100 hover:text-downy-500;
+}
+
+.nav-btn > button {
+  @apply w-full;
+}
