@@ -1,8 +1,9 @@
 import Head from 'next/head';
+import Header from 'components/Header';
 
 const Home = () => {
   return (
-    <div>
+    <div className="bg-downy-100 h-screen">
       <Head>
         <title>Picpic</title>
         <meta
@@ -11,6 +12,7 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Header />
     </div>
   );
 };
