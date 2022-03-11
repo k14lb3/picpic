@@ -7,7 +7,7 @@ const VARIANT = {
 const Button = ({ outlined, className, children, ...props }) => {
   return (
     <button
-      className={`px-2 py-1 border-solid border rounded-sm text-sm font-medium tracking-wide ease-in duration-200 ${
+      className={`px-3 py-1.5 border-solid border rounded-sm text-sm font-medium tracking-wide ease-in duration-200 ${
         outlined ? VARIANT.OUTLINED : VARIANT.DEFAULT
       }${className ? ` ${className}` : ''}`}
       {...props}
