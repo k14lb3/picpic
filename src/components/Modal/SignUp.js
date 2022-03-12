@@ -6,6 +6,7 @@ import Button from 'components/Button';
 import InputText from 'components/InputText';
 import { MODAL } from 'components/Modal';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 
@@ -16,6 +17,7 @@ const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
 
 const SignUp = () => {
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -70,7 +72,20 @@ const SignUp = () => {
             className="mb-4"
             placeholder="Username"
           />
-          <InputText ref={passwordRef} type="password" placeholder="Password" />
+          <div className="flex">
+            <InputText
+              ref={passwordRef}
+              className="pr-0 rounded-r-none border-r-0"
+              type={showPassword ? undefined : 'password'}
+              placeholder="Password"
+            />
+            <div
+              className="w-9 p-2 text-downy border-solid border border-l-0 border-downy bg-downy-100"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeIcon /> : <EyeOffIcon />}
+            </div>
+          </div>
           <Button className="w-full mt-4 mb-2">Sign Up</Button>
         </form>
         <div className="flex">
