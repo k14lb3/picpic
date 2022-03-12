@@ -1,12 +1,42 @@
+import { useRef, useState } from 'react';
+import Image from 'next/image';
 import { useSetRecoilState } from 'recoil';
 import { modalState } from 'recoil/atoms';
-import Image from 'next/image';
 import Button from 'components/Button';
 import InputText from 'components/InputText';
 import { MODAL } from 'components/Modal';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+
+// https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
+
+const isValidEmail = (email) =>
+  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
 const SignUp = () => {
+  const [error, setError] = useState(null);
+  const emailRef = useRef(null);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
   const setModal = useSetRecoilState(modalState);
+
+  const signUp = async (e) => {
+    e.preventDefault();
+
+    setError(null);
+
+    if (!isValidEmail(emailRef.current.value)) {
+      setError(setError('Invalid email address.'));
+      return;
+    }
+
+    // try {
+    //   const userCred = createUserWithEmailAndPassword(email, password);
+    //   await userCred.user.sendEmailVerification({
+    //     url: window.location.href,
+    //   });
+    // } catch (e) {}
+  };
+
   return (
     <>
       <div className="relative w-auto h-20 mb-8 m-auto">
@@ -19,10 +49,21 @@ const SignUp = () => {
         />
       </div>
       <div className="px-4">
-        <InputText className="mb-4" placeholder="Email" />
-        <InputText className="mb-4" placeholder="Username" />
-        <InputText placeholder="Password" />
-        <Button className="w-full mt-4 mb-2">Sign Up</Button>
+        <form onSubmit={signUp} noValidate>
+          <InputText
+            ref={emailRef}
+            className="mb-4"
+            type="email"
+            placeholder="Email"
+          />
+          <InputText
+            ref={usernameRef}
+            className="mb-4"
+            placeholder="Username"
+          />
+          <InputText ref={passwordRef} type="password" placeholder="Password" />
+          <Button className="w-full mt-4 mb-2">Sign Up</Button>
+        </form>
         <div className="flex">
           <p>
             Already have an account?
