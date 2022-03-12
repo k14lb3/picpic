@@ -15,3 +15,7 @@
 .nav-btn > button {
   @apply w-full;
 }
+
+.close-btn {
+  @apply w-6 h-6 text-downy ease-in cursor-pointer hover:duration-200 hover:scale-90;
+}
