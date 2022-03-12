@@ -12,6 +12,8 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 const isValidEmail = (email) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
+const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
+
 const SignUp = () => {
   const [error, setError] = useState(null);
   const emailRef = useRef(null);
@@ -25,7 +27,14 @@ const SignUp = () => {
     setError(null);
 
     if (!isValidEmail(emailRef.current.value)) {
-      setError(setError('Invalid email address.'));
+      setError('Invalid email address.');
+      return;
+    }
+
+    if (!isValidUsername(usernameRef.current.value)) {
+      setError(
+        'Usernames can only use letters, numbers, underscores and periods.'
+      );
       return;
     }
 
@@ -75,6 +84,11 @@ const SignUp = () => {
             </span>
           </p>
         </div>
+        {error && (
+          <div className="mt-4 text-center">
+            <p className="text-red-500">{error}</p>
+          </div>
+        )}
       </div>
     </>
   );
