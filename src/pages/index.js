@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Header from 'components/Header';
+import Modal from 'components/Modal';
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
+      <Modal />
     </div>
   );
 };
