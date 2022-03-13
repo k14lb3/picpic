@@ -21,8 +21,8 @@ const LogIn = () => {
         />
       </div>
       <div className="px-4">
-        <InputText className="mb-4" placeholder="Username or email" />
-        <InputText placeholder="Password" />
+        <InputText className="mb-2" placeholder="Username or email" />
+        <InputText type="password" placeholder="Password" />
         <Link href="/">
           <a className="text-sm text-downy outline-none hover:underline">
             Forgot your password?

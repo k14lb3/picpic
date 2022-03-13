@@ -2,7 +2,7 @@ import { useState, forwardRef } from 'react';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 
 const InputText = forwardRef(
-  ({ className, type = 'text', placeholder, ...props }, ref) => {
+  ({ className, type = 'text', placeholder, hasShowPassword, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -10,11 +10,17 @@ const InputText = forwardRef(
         <input
           ref={ref}
           className={`peer w-full px-2 pt-4 pb-1 bg-downy-100 border-solid border border-downy rounded-sm text-xs outline-none placeholder-transparent placeholder-shown:py-1.5 placeholder-shown:text-base${
-            type === 'password' ? ' pr-0 rounded-r-none border-r-0' : ''
+            type === 'password' && hasShowPassword
+              ? ' pr-0 rounded-r-none border-r-0'
+              : ''
           }`}
           placeholder={placeholder}
           type={
-            type === 'password' ? (showPassword ? 'text' : 'password') : type
+            type === 'password' && hasShowPassword
+              ? showPassword
+                ? 'text'
+                : 'password'
+              : type
           }
           {...props}
         />
@@ -23,7 +29,7 @@ const InputText = forwardRef(
             {placeholder}
           </label>
         )}
-        {type === 'password' && (
+        {type === 'password' && hasShowPassword && (
           <div
             className="w-9 p-2 text-downy border-solid border border-l-0 border-downy bg-downy-100"
             onClick={() => setShowPassword(!showPassword)}

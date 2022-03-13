@@ -61,16 +61,16 @@ const SignUp = () => {
         <form onSubmit={signUp} noValidate>
           <InputText
             ref={emailRef}
-            className="mb-4"
+            className="mb-2"
             type="email"
             placeholder="Email"
           />
           <InputText
             ref={usernameRef}
-            className="mb-4"
+            className="mb-2"
             placeholder="Username"
           />
-          <InputText ref={passwordRef} type="password" placeholder="Password" />
+          <InputText ref={passwordRef} type="password" placeholder="Password" hasShowPassword />
           <Button className="w-full mt-4 mb-2">Sign Up</Button>
         </form>
         <div className="flex">
