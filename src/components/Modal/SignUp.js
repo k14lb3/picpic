@@ -24,17 +24,26 @@ const SignUp = () => {
   const signUp = async (e) => {
     e.preventDefault();
 
+    const email = emailRef.current.value;
+    const username = usernameRef.current.value;
+    const password = passwordRef.current.value;
+
     setError(null);
 
-    if (!isValidEmail(emailRef.current.value)) {
+    if (!isValidEmail(email)) {
       setError('Invalid email address.');
       return;
     }
 
-    if (!isValidUsername(usernameRef.current.value)) {
+    if (!isValidUsername(username)) {
       setError(
         'Usernames can only use letters, numbers, underscores and periods.'
       );
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be 6 or more in length.');
       return;
     }
 
@@ -70,7 +79,12 @@ const SignUp = () => {
             className="mb-2"
             placeholder="Username"
           />
-          <InputText ref={passwordRef} type="password" placeholder="Password" hasShowPassword />
+          <InputText
+            ref={passwordRef}
+            type="password"
+            placeholder="Password"
+            hasShowPassword
+          />
           <Button className="w-full mt-4 mb-2">Sign Up</Button>
         </form>
         <div className="flex">
