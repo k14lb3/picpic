@@ -2,7 +2,7 @@ import { useState, forwardRef } from 'react';
 import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 
 const InputText = forwardRef(
-  ({ className, type = 'text', placeholder, hasShowPassword, ...props }, ref) => {
+  ({ className, type, placeholder, hasShowPassword, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
 
     return (
@@ -41,5 +41,9 @@ const InputText = forwardRef(
     );
   }
 );
+
+InputText.defaultProps = {
+  type: 'text',
+};
 
 export default InputText;
