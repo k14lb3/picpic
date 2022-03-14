@@ -54,8 +54,13 @@ const SignUp = () => {
       return;
     }
 
-    if (password.length < 6) {
+    if (username.length < 6) {
       setError('Password must be 6 or more in length.');
+      return;
+    }
+
+    if (password.length < 8) {
+      setError('Password must be 8 or more in length.');
       return;
     }
 
