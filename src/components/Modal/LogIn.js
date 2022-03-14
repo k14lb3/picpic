@@ -1,13 +1,31 @@
-import { modalState } from 'recoil/atoms';
-import { useSetRecoilState } from 'recoil';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSetRecoilState } from 'recoil';
+import { modalState } from 'recoil/atoms';
 import Button from 'components/Button';
 import InputText from 'components/InputText';
 import { MODAL } from 'components/Modal';
 
 const LogIn = () => {
   const setModal = useSetRecoilState(modalState);
+  const [logInDisabled, setLogInDisabled] = useState(true);
+  const usernameRef = useRef(null);
+  const passwordRef = useRef(null);
+
+  const logIn = (e) => {
+    e.preventDefault();
+  };
+
+  const inputOnChange = () => {
+    if (
+      usernameRef.current.value.length === 0 ||
+      passwordRef.current.value.length === 0
+    ) {
+      return setLogInDisabled(true);
+    }
+    setLogInDisabled(false);
+  };
 
   return (
     <>
@@ -21,14 +39,28 @@ const LogIn = () => {
         />
       </div>
       <div className="px-4">
-        <InputText className="mb-2" placeholder="Username or email" />
-        <InputText type="password" placeholder="Password" />
-        <Link href="/">
-          <a className="text-sm text-downy outline-none hover:underline">
-            Forgot your password?
-          </a>
-        </Link>
-        <Button className="w-full mt-4 mb-2">Log In</Button>
+        <form onSubmit={logIn} noValidate>
+          <InputText
+            ref={usernameRef}
+            className="mb-2"
+            placeholder="Username or email"
+            onChange={inputOnChange}
+          />
+          <InputText
+            ref={passwordRef}
+            type="password"
+            placeholder="Password"
+            onChange={inputOnChange}
+          />
+          <Link href="/">
+            <a className="text-sm text-downy outline-none hover:underline">
+              Forgot your password?
+            </a>
+          </Link>
+          <Button disabled={logInDisabled} className="w-full mt-4 mb-2">
+            Log In
+          </Button>
+        </form>
         <div className="flex">
           <p>
             Dont have an account?
