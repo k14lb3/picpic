@@ -1,6 +1,6 @@
 const VARIANT = {
   DEFAULT:
-    'bg-downy border-downy text-white hover:bg-downy-600 hover:border-downy-600',
+    'bg-downy border-downy text-white hover:bg-downy-600 hover:border-downy-600 disabled:bg-downy-400 disabled:border-downy-400',
   OUTLINED: 'border-downy text-downy hover:bg-downy-50',
 };
 

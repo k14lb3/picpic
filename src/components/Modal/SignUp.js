@@ -19,6 +19,7 @@ const SignUp = () => {
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
+  const [signUpDisabled, setSignUpDisabled] = useState(true);
   const setModal = useSetRecoilState(modalState);
 
   const signUp = async (e) => {
@@ -29,6 +30,10 @@ const SignUp = () => {
     const password = passwordRef.current.value;
 
     setError(null);
+
+    if (signUpDisabled) {
+      return;
+    }
 
     if (!isValidEmail(email)) {
       setError('Invalid email address.');
@@ -55,6 +60,17 @@ const SignUp = () => {
     // } catch (e) {}
   };
 
+  const inputOnChange = () => {
+    if (
+      emailRef.current.value.length === 0 ||
+      usernameRef.current.value.length === 0 ||
+      passwordRef.current.value.length === 0
+    ) {
+      return setSignUpDisabled(true);
+    }
+    setSignUpDisabled(false);
+  };
+
   return (
     <>
       <div className="relative w-auto h-20 mb-8 m-auto">
@@ -73,19 +89,24 @@ const SignUp = () => {
             className="mb-2"
             type="email"
             placeholder="Email"
+            onChange={inputOnChange}
           />
           <InputText
             ref={usernameRef}
             className="mb-2"
             placeholder="Username"
+            onChange={inputOnChange}
           />
           <InputText
             ref={passwordRef}
             type="password"
             placeholder="Password"
             hasShowPassword
+            onChange={inputOnChange}
           />
-          <Button className="w-full mt-4 mb-2">Sign Up</Button>
+          <Button disabled={signUpDisabled} className="w-full mt-4 mb-2">
+            Sign Up
+          </Button>
         </form>
         <div className="flex">
           <p>
