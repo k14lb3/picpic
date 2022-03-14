@@ -40,12 +40,16 @@ const Header = () => {
           <Navigation />
         ) : (
           <div>
-            <Button className="mr-3" onClick={() => setModal(MODAL.LOGIN)}>
-              Log In
-            </Button>
-            <Button outlined onClick={() => setModal(MODAL.SIGNUP)}>
-              Sign Up
-            </Button>
+            <Button
+              className="mr-3"
+              label="Log In"
+              onClick={() => setModal(MODAL.LOGIN)}
+            />
+            <Button
+              outlined
+              label="Sign Up"
+              onClick={() => setModal(MODAL.SIGNUP)}
+            />
           </div>
         )}
       </div>

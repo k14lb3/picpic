@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { auth } from 'firebase.js';
 import { useSetRecoilState } from 'recoil';
 import { modalState } from 'recoil/atoms';
 import Button from 'components/Button';
 import InputText from 'components/InputText';
 import { MODAL } from 'components/Modal';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import Loader from 'components/Loader';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 
@@ -16,6 +18,7 @@ const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
 
 const SignUp = () => {
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
@@ -53,11 +56,18 @@ const SignUp = () => {
     }
 
     // try {
-    //   const userCred = createUserWithEmailAndPassword(email, password);
+    //   const userCred = await createUserWithEmailAndPassword(
+    //     auth,
+    //     email,
+    //     password
+    //   );
     //   await userCred.user.sendEmailVerification({
     //     url: window.location.href,
     //   });
-    // } catch (e) {}
+    //   console.log(userCred);
+    // } catch (e) {
+    //   console.log(e.message);
+    // }
   };
 
   const inputOnChange = () => {
@@ -104,9 +114,12 @@ const SignUp = () => {
             hasShowPassword
             onChange={inputOnChange}
           />
-          <Button disabled={signUpDisabled} className="w-full mt-4 mb-2">
-            Sign Up
-          </Button>
+          <Button
+            disabled={signUpDisabled}
+            loading={loading}
+            className="w-full mt-4 mb-2"
+            label="Sign Up"
+          />
         </form>
         <div className="flex">
           <p>

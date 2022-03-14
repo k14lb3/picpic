@@ -1,6 +1,6 @@
 const SIZE = {
-  SM: 'after:w-6 after:h-6 after:border-4',
-  MD: 'after:w-9 after:h-9 after:border-[6px]',
+  SM: 'after:w-4 after:h-4 after:border-2',
+  MD: 'after:w-6 after:h-6 after:border-4',
   LG: 'after:w-12 after:h-12 after:border-8',
 };
 

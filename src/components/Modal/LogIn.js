@@ -57,9 +57,11 @@ const LogIn = () => {
               Forgot your password?
             </a>
           </Link>
-          <Button disabled={logInDisabled} className="w-full mt-4 mb-2">
-            Log In
-          </Button>
+          <Button
+            disabled={logInDisabled}
+            className="w-full mt-4 mb-2"
+            label="Log In"
+          />
         </form>
         <div className="flex">
           <p>
