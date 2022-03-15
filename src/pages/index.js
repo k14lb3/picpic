@@ -1,15 +1,30 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import {
+  getDocs,
+  setDoc,
+  deleteDoc,
+  serverTimestamp,
+  getDoc,
+} from 'firebase/firestore';
+import { signInWithEmailAndPassword, deleteUser, signOut } from 'firebase/auth';
+import { auth } from '../firebase/config';
+import {
+  serverTimestampDoc,
+  usersUnverifiedCol,
+  userUnverifiedDoc,
+} from '../firebase/refs';
 import { onAuthStateChanged } from 'firebase/auth';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import _ from 'lodash';
 import { currentUserState } from 'recoil/atoms';
-import { auth } from '../firebase/config';
+import Splash from 'components/Splash';
 import Header from 'components/Header';
 import Modal from 'components/Modal';
 
 const Home = () => {
-  const setCurrentUser = useSetRecoilState(currentUserState);
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [loading, setLoading] = useState(false);
 
   useEffect(
     () =>
@@ -22,8 +37,48 @@ const Home = () => {
     []
   );
 
+  useEffect(() => {
+    const checkUnverifiedUsers = async () => {
+      setLoading(true);
+
+      const usersUnverifiedDocs = (await getDocs(usersUnverifiedCol)).docs;
+      const usersUnverified = usersUnverifiedDocs.map((doc) => ({
+        uid: doc.id,
+        ...doc.data(),
+      }));
+
+      await setDoc(serverTimestampDoc, {
+        timestamp: serverTimestamp(),
+      });
+
+      const { timestamp: currentTimestamp } = (
+        await getDoc(serverTimestampDoc)
+      ).data();
+
+      usersUnverified.forEach(async (user) => {
+        const { uid, email, password, timestamp: userTimestamp } = user;
+        const duration = (currentTimestamp - userTimestamp) / 60 / 60;
+
+        if (duration > 1) {
+          if (currentUser) {
+            await signOut(auth);
+          }
+          await signInWithEmailAndPassword(auth, email, password);
+          await deleteUser(auth.currentUser);
+          await deleteDoc(userUnverifiedDoc(uid));
+        }
+      });
+
+      setLoading(false);
+    };
+
+    if (!currentUser) {
+      checkUnverifiedUsers();
+    }
+  }, []);
+
   return (
-    <div className="bg-downy-100 h-screen">
+    <>
       <Head>
         <title>Picpic</title>
         <meta
@@ -32,9 +87,15 @@ const Home = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
-      <Modal />
-    </div>
+      {loading ? (
+        <Splash />
+      ) : (
+        <div className="bg-downy-100 h-screen">
+          <Header />
+          <Modal />
+        </div>
+      )}
+    </>
   );
 };
 

@@ -78,6 +78,7 @@ const SignUp = () => {
       await setDoc(userUnverifiedDoc(auth.currentUser.uid), {
         email: email,
         username: username,
+        password: password,
         timestamp: serverTimestamp(),
       });
 
@@ -86,7 +87,7 @@ const SignUp = () => {
       setVerificationSent(true);
     } catch (e) {
       if (e.message === 'Firebase: Error (auth/email-already-in-use).') {
-        setError('Email already in use.');
+        setError('Email s already in use.');
       }
     }
 
