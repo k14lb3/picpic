@@ -2,7 +2,7 @@ import Loader from 'components/Loader';
 
 const VARIANT = {
   DEFAULT:
-    'bg-downy-600 border-downy-600 text-white hover:bg-downy-550 hover:border-downy-550 disabled:bg-downy-400 disabled:border-downy-400 ',
+    'bg-downy-600 border-downy-600 text-white hover:bg-downy-650 hover:border-downy-550 disabled:bg-downy-400 disabled:border-downy-400 ',
   OUTLINED: 'border-downy text-downy hover:bg-downy-50',
 };
 
