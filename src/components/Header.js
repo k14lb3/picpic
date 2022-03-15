@@ -1,14 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSetRecoilState } from 'recoil';
-import { modalState } from 'recoil/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { currentUserState, modalState } from 'recoil/atoms';
 import SearchBar from 'components/SearchBar';
 import Button from 'components/Button';
 import Navigation from 'components/Navigation';
 import { MODAL } from 'components/Modal';
 
 const Header = () => {
-  const user = false;
+  const currentUser = useRecoilValue(currentUserState);
   const setModal = useSetRecoilState(modalState);
 
   return (
@@ -36,7 +36,7 @@ const Header = () => {
           </a>
         </Link>
         <SearchBar />
-        {user ? (
+        {currentUser ? (
           <Navigation />
         ) : (
           <div>
