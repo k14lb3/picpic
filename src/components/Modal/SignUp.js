@@ -1,16 +1,18 @@
-import { useRef, useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { auth } from 'firebase.js';
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from 'firebase/auth';
+import { updateProfile } from 'firebase/auth';
+import { setDoc, serverTimestamp } from 'firebase/firestore';
+import { auth } from '../../firebase/config';
+import { userUnverifiedDoc } from '../../firebase/refs';
 import { useSetRecoilState } from 'recoil';
 import { modalState } from 'recoil/atoms';
 import Button from 'components/Button';
 import InputText from 'components/InputText';
 import { MODAL } from 'components/Modal';
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  updateProfile,
-} from 'firebase/auth';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 
@@ -26,12 +28,12 @@ const SignUp = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [signUpDisabled, setSignUpDisabled] = useState(true);
+  const [resendEmailDisabled, setResendEmailDisabled] = useState(true);
   const [verificationSent, setVerificationSent] = useState(false);
   const setModal = useSetRecoilState(modalState);
 
   const signUp = async (e) => {
     e.preventDefault();
-
     const email = emailRef.current.value;
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
@@ -66,19 +68,20 @@ const SignUp = () => {
 
     try {
       setLoading(true);
-      const userCred = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+
+      await createUserWithEmailAndPassword(auth, email, password);
 
       await updateProfile(auth.currentUser, {
         displayName: username,
-        photoURL:
-          'https://firebasestorage.googleapis.com/v0/b/picpic-59a20.appspot.com/o/stock-imgs%2Fdp.png?alt=media&token=64fa4f1b-189c-4c48-a881-a7a65981d0fb',
       });
 
-      await sendEmailVerification(userCred.user);
+      await setDoc(userUnverifiedDoc(auth.currentUser.uid), {
+        email: email,
+        username: username,
+        timestamp: serverTimestamp(),
+      });
+
+      await sendEmailVerification(auth.currentUser);
 
       setVerificationSent(true);
     } catch (e) {
@@ -86,7 +89,26 @@ const SignUp = () => {
         setError('Email already in use.');
       }
     }
+
     setLoading(false);
+
+    setTimeout(() => setResendEmailDisabled(false), 60000);
+  };
+
+  const resendEmail = async () => {
+    if (resendEmailDisabled) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await sendEmailVerification(auth.currentUser);
+    } catch (e) {}
+
+    setLoading(false);
+
+    setTimeout(() => setResendEmailDisabled(false), 60000);
   };
 
   const inputOnChange = () => {
@@ -114,27 +136,20 @@ const SignUp = () => {
       <div className="px-4">
         {verificationSent ? (
           <>
-            <h2 className="font-bold text-xl text-left mb-4">
+            <h2 className="text-center text-lg font-bold mb-2">
               Hello {auth.currentUser.displayName},
             </h2>
             <p className="mb-8 text-center">
-              Thanks for signing up with Picpic! We just need to verify if it's
-              really yours. We've sent an email to{' '}
+              Thanks for signing up with Picpic! Before you get started we need
+              to verify your email address. We've sent an email to{' '}
               <span className="font-bold">{auth.currentUser.email}</span>.
             </p>
             <Button
               className="block mx-auto"
+              disabled={resendEmailDisabled}
               loading={loading}
               label="Resend email"
-              onClick={async () => {
-                setLoading(true);
-
-                try {
-                  await sendEmailVerification(auth.currentUser);
-                } catch (e) {}
-
-                setLoading(false);
-              }}
+              onClick={resendEmail}
             />
           </>
         ) : (
