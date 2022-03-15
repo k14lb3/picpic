@@ -1,4 +1,4 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
@@ -8,7 +8,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['Roboto', ...defaultTheme.fontFamily.sans],
+        sans: ['Roboto', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         downy: {
@@ -20,6 +20,7 @@ module.exports = {
           400: '#8FD5D8',
           500: '#71C9CE',
           600: '#47B9C0',
+          650: '#3CA9B0',
           700: '#35949A',
           800: '#276C70',
           900: '#184446',
