@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+} from 'firebase/auth';
 import { getDocs } from 'firebase/firestore';
 import { useSetRecoilState } from 'recoil';
 import { auth } from '@firebase/config';
@@ -13,12 +15,28 @@ import { MODAL } from '@components/Modal';
 import { isValidEmail } from '@components/Modal/SignUp';
 
 const LogIn = () => {
-  const usernameRef = useRef(null);
+  const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const emailResetRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [logInDisabled, setLogInDisabled] = useState(true);
+  const [forgotPassword, setForgotPassword] = useState(false);
+  const [sendPasswordResetDisabled, setSendPasswordResetDisabled] =
+    useState(true);
   const setModal = useSetRecoilState(modalState);
+
+  const getEmailFromUsername = async (username) => {
+    const usersDocs = (await getDocs(usersCol)).docs;
+    const users = usersDocs.map((doc) => doc.data());
+    const email = users.filter((data) => data.username === username)[0]?.email;
+
+    if (email === undefined) {
+      throw new Error('Firebase: Error (auth/user-not-found).');
+    }
+
+    return email;
+  };
 
   const logIn = async (e) => {
     e.preventDefault();
@@ -26,7 +44,7 @@ const LogIn = () => {
     if (logInDisabled) {
       return;
     }
-    const username = usernameRef.current.value;
+    const username = emailRef.current.value;
     const password = passwordRef.current.value;
 
     setError(null);
@@ -37,21 +55,12 @@ const LogIn = () => {
       if (isValidEmail(username)) {
         await signInWithEmailAndPassword(auth, username, password);
       } else {
-        const usersDocs = (await getDocs(usersCol)).docs;
-        const users = usersDocs.map((doc) => doc.data());
-        const email = users.filter((data) => data.username === username)[0]
-          ?.email;
-
-        if (email === undefined) {
-          throw new Error('Firebase: Error (auth/user-not-found).');
-        }
-
+        const email = await getEmailFromUsername(username);
         await signInWithEmailAndPassword(auth, email, password);
       }
 
       setModal(null);
     } catch (e) {
-      console.log(e.message);
       switch (e.message) {
         case 'Firebase: Error (auth/user-not-found).':
           setError(
@@ -68,9 +77,44 @@ const LogIn = () => {
     setLoading(false);
   };
 
+  const sendPasswordReset = async (e) => {
+    e.preventDefault();
+
+    if (sendPasswordResetDisabled) {
+      return;
+    }
+
+    const email = emailResetRef.current.value;
+
+    setError(null);
+
+    setLoading(true);
+
+    try {
+      if (isValidEmail(email)) {
+        await sendPasswordResetEmail(auth, email);
+      } else {
+        const emailFromUsername = await getEmailFromUsername(email);
+        await sendPasswordResetEmail(auth, emailFromUsername);
+      }
+
+      setSendPasswordResetDisabled(true);
+
+      setTimeout(() => setSendPasswordResetDisabled(false), 60000);
+    } catch (e) {
+      switch (e.message) {
+        case 'Firebase: Error (auth/user-not-found).':
+          setError('Account not found.');
+          break;
+      }
+    }
+
+    setLoading(false);
+  };
+
   const inputOnChange = () => {
     if (
-      usernameRef.current.value.length === 0 ||
+      emailRef.current.value.length === 0 ||
       passwordRef.current.value.length === 0
     ) {
       return setLogInDisabled(true);
@@ -90,42 +134,82 @@ const LogIn = () => {
         />
       </div>
       <div className="px-4">
-        <form onSubmit={logIn} noValidate>
-          <InputText
-            ref={usernameRef}
-            className="mb-2"
-            placeholder="Username or email"
-            onChange={inputOnChange}
-          />
-          <InputText
-            ref={passwordRef}
-            type="password"
-            placeholder="Password"
-            onChange={inputOnChange}
-          />
-          <Link href="/">
-            <a className="text-sm text-downy outline-none hover:underline">
-              Forgot your password?
-            </a>
-          </Link>
-          <Button
-            className="w-full mt-4 mb-2"
-            disabled={logInDisabled}
-            loading={loading}
-            label="Log In"
-          />
-        </form>
-        <div className="flex">
-          <p>
-            Dont have an account?
-            <span
-              className="text-downy ml-1 cursor-pointer hover:underline"
-              onClick={() => setModal(MODAL.SIGNUP)}
+        {forgotPassword ? (
+          <>
+            <h2 className="text-center text-lg font-bold mb-2">
+              Trouble Logging In?
+            </h2>
+            <p className="text-center mb-2">
+              Enter your email or username and we'll send you a link to reset
+              your password
+            </p>
+            <form onSubmit={sendPasswordReset}>
+              <InputText
+                ref={emailResetRef}
+                className="mb-4"
+                placeholder="Username or email"
+                onChange={() => {
+                  if (emailResetRef.current.value.length === 0) {
+                    return setSendPasswordResetDisabled(true);
+                  }
+                  setSendPasswordResetDisabled(false);
+                }}
+              />
+              <Button
+                className="w-full mb-4"
+                disabled={sendPasswordResetDisabled}
+                loading={loading}
+                label="Send Password Reset"
+              />
+            </form>
+            <p
+              className="font-bold cursor-pointer hover:underline"
+              onClick={() => setForgotPassword(false)}
             >
-              Sign Up
-            </span>
-          </p>
-        </div>
+              Back to Log In
+            </p>
+          </>
+        ) : (
+          <>
+            <form onSubmit={logIn} noValidate>
+              <InputText
+                ref={emailRef}
+                className="mb-2"
+                placeholder="Username or email"
+                onChange={inputOnChange}
+              />
+              <InputText
+                ref={passwordRef}
+                type="password"
+                placeholder="Password"
+                onChange={inputOnChange}
+              />
+              <p
+                className="inline text-sm text-downy outline-none hover:underline cursor-pointer"
+                onClick={() => setForgotPassword(true)}
+              >
+                Forgot your password?
+              </p>
+              <Button
+                className="w-full mt-4 mb-2"
+                disabled={logInDisabled}
+                loading={loading}
+                label="Log In"
+              />
+            </form>
+            <div className="flex">
+              <p>
+                Dont have an account?
+                <span
+                  className="text-downy ml-1 cursor-pointer hover:underline"
+                  onClick={() => setModal(MODAL.SIGNUP)}
+                >
+                  Sign Up
+                </span>
+              </p>
+            </div>
+          </>
+        )}
         {error && (
           <div className="mt-4 text-center">
             <p className="text-red-500">{error}</p>
