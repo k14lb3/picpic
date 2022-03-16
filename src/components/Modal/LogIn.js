@@ -2,10 +2,10 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSetRecoilState } from 'recoil';
-import { modalState } from 'recoil/atoms';
-import Button from 'components/Button';
-import InputText from 'components/InputText';
-import { MODAL } from 'components/Modal';
+import { modalState } from '@recoil/atoms';
+import Button from '@components/Button';
+import InputText from '@components/InputText';
+import { MODAL } from '@components/Modal';
 
 const LogIn = () => {
   const setModal = useSetRecoilState(modalState);

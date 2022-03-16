@@ -7,20 +7,24 @@ import {
   serverTimestamp,
   getDoc,
 } from 'firebase/firestore';
-import { signInWithEmailAndPassword, deleteUser, signOut } from 'firebase/auth';
-import { auth } from '../firebase/config';
+import {
+  signInWithEmailAndPassword,
+  deleteUser,
+  signOut,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { useRecoilState } from 'recoil';
+import _ from 'lodash';
+import { auth } from '@firebase/config';
 import {
   serverTimestampDoc,
   usersUnverifiedCol,
   userUnverifiedDoc,
-} from '../firebase/refs';
-import { onAuthStateChanged } from 'firebase/auth';
-import { useRecoilState } from 'recoil';
-import _ from 'lodash';
-import { currentUserState } from 'recoil/atoms';
-import Splash from 'components/Splash';
-import Header from 'components/Header';
-import Modal from 'components/Modal';
+} from '@firebase/refs';
+import { currentUserState } from '@recoil/atoms';
+import Splash from '@components/Splash';
+import Header from '@components/Header';
+import Modal from '@components/Modal';
 
 const Home = () => {
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState);

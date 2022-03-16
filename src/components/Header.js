@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { currentUserState, modalState } from 'recoil/atoms';
-import SearchBar from 'components/SearchBar';
-import Button from 'components/Button';
-import Navigation from 'components/Navigation';
-import { MODAL } from 'components/Modal';
+import { currentUserState, modalState } from '@recoil/atoms';
+import SearchBar from '@components/SearchBar';
+import Button from '@components/Button';
+import Navigation from '@components/Navigation';
+import { MODAL } from '@components/Modal';
 
 const Header = () => {
   const currentUser = useRecoilValue(currentUserState);

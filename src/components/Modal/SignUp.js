@@ -3,16 +3,16 @@ import Image from 'next/image';
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  updateProfile,
 } from 'firebase/auth';
-import { updateProfile } from 'firebase/auth';
 import { setDoc, serverTimestamp } from 'firebase/firestore';
-import { auth } from '../../firebase/config';
-import { userUnverifiedDoc } from '../../firebase/refs';
 import { useSetRecoilState } from 'recoil';
-import { modalState } from 'recoil/atoms';
-import Button from 'components/Button';
-import InputText from 'components/InputText';
-import { MODAL } from 'components/Modal';
+import { auth } from '@firebase/config';
+import { modalState } from '@recoil/atoms';
+import { userUnverifiedDoc } from '@firebase/refs';
+import Button from '@components/Button';
+import InputText from '@components/InputText';
+import { MODAL } from '@components/Modal';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 

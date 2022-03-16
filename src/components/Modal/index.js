@@ -1,10 +1,10 @@
 import React from 'react';
 import reactDom from 'react-dom';
 import { useRecoilState } from 'recoil';
-import { modalState } from 'recoil/atoms';
 import { XIcon } from '@heroicons/react/solid';
-import LogIn from 'components/Modal/LogIn';
-import SignUp from 'components/Modal/SignUp';
+import { modalState } from '@recoil/atoms';
+import LogIn from '@components/Modal/LogIn';
+import SignUp from '@components/Modal/SignUp';
 
 export const MODAL = { LOGIN: 'login', SIGNUP: 'signup' };
 
