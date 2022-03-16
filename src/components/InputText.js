@@ -9,7 +9,7 @@ const InputText = forwardRef(
       <div className={`relative flex${className ? ` ${className}` : ''}`}>
         <input
           ref={ref}
-          className={`peer w-full px-2 pt-4 pb-1 bg-downy-100 border-solid border border-downy rounded-sm text-xs outline-none placeholder-transparent placeholder-shown:py-1.5 placeholder-shown:text-base${
+          className={`peer w-full px-2 pt-4 pb-1 bg-downy-100 border-solid border border-downy-300 rounded-sm text-xs outline-none placeholder-transparent placeholder-shown:py-1.5 placeholder-shown:text-base focus:border-downy-600${
             type === 'password' && hasShowPassword
               ? ' pr-0 rounded-r-none border-r-0'
               : ''
