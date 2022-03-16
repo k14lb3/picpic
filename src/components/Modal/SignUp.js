@@ -16,7 +16,7 @@ import { MODAL } from '@components/Modal';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
 
-const isValidEmail = (email) =>
+export const isValidEmail = (email) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
 
 const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
@@ -66,9 +66,9 @@ const SignUp = () => {
       return;
     }
 
-    try {
-      setLoading(true);
+    setLoading(true);
 
+    try {
       await createUserWithEmailAndPassword(auth, email, password);
 
       await updateProfile(auth.currentUser, {
@@ -86,8 +86,10 @@ const SignUp = () => {
 
       setVerificationSent(true);
     } catch (e) {
-      if (e.message === 'Firebase: Error (auth/email-already-in-use).') {
-        setError('Email s already in use.');
+      switch (e.message) {
+        case 'Firebase: Error (auth/email-already-in-use).':
+          setError('Email is already in use.');
+          break;
       }
     }
 
