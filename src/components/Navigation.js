@@ -1,20 +1,31 @@
-import Router from 'next/router';
+import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/router';
 import { useRecoilValue } from 'recoil';
-import { auth } from '@firebase/config';
 import { currentUserState } from '@recoil/atoms';
 import { HomeIcon, ChatIcon, BellIcon } from '@heroicons/react/outline';
+import ProfileMenu from './ProfileMenu';
 
 const Navigation = () => {
   const currentUser = useRecoilValue(currentUserState);
+  const [profileMenu, setProfileMenu] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="flex items-center">
-      <div className="nav-btn">
+      <div
+        className={`nav-btn${
+          router.pathname === '/' && !profileMenu ? ' pointer-events-none' : ''
+        }`}
+      >
         <Link href="/">
           <a>
-            <HomeIcon />
+            <HomeIcon
+              className={
+                router.pathname === '/' && !profileMenu ? 'text-downy' : ''
+              }
+            />
           </a>
         </Link>
       </div>
@@ -28,19 +39,30 @@ const Navigation = () => {
           <BellIcon />
         </button>
       </div>
-      <div
-        className="group relative flex w-11 h-11 p-2 rounded-full overflow-hidden cursor-pointer ease-in duration-200 hover:scale-90"
-        onClick={async () => {
-          await signOut(auth);
-          Router.reload();
-        }}
-      >
-        <div className="absolute w-9 h-9 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full border-solid border-2 border-downy opacity-0 ease-in duration-200 group-hover:opacity-100" />
-        <img
-          className="w-7 h-7 rounded-full ease-in duration-200"
-          src={currentUser.displayPicture}
-          alt=""
+      <div className={`relative flex w-11 h-11 p-2 rounded-full`}>
+        <div
+          className={`absolute w-9 h-9 top-1/2 left-1/2 opacity-0 transform -translate-x-1/2 -translate-y-1/2 rounded-full border-solid border-2 border-downy ease-in duration-200${
+            profileMenu ? ' scale-90 opacity-100' : ''
+          }`}
         />
+        <div
+          className={`relative w-full h-full rounded-full overflow-hidden cursor-pointer ease-in duration-200${
+            profileMenu ? ' scale-90' : ''
+          }`}
+          onClick={() => setProfileMenu(true)}
+        >
+          <Image
+            src={currentUser.displayPicture}
+            alt="Display picture"
+            layout="fill"
+            objectFit="contain"
+          />
+        </div>
+        {profileMenu && (
+          <>
+            <ProfileMenu close={() => setProfileMenu(false)} />
+          </>
+        )}
       </div>
     </nav>
   );

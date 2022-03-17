@@ -16,6 +16,14 @@
   @apply w-full;
 }
 
+.profile-menu-btn {
+  @apply flex items-center text-sm cursor-pointer py-2 px-4 ease-in duration-200 hover:bg-downy-50 select-none;
+}
+
+.profile-menu-btn svg {
+  @apply w-5 h-5 mr-4;
+}
+
 .close-btn {
   @apply w-6 h-6 text-downy ease-in cursor-pointer hover:duration-200 hover:scale-90;
 }
