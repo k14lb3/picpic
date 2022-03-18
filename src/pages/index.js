@@ -121,7 +121,6 @@ const Home = () => {
       ) : (
         <>
           <Header />
-          <Modal />
         </>
       )}
     </>
