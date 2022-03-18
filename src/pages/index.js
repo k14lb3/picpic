@@ -29,7 +29,7 @@ import Header from '@components/Header';
 import Modal from '@components/Modal';
 
 const Home = () => {
-  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
+  const [currentUserAtom, setCurrentUserAtom] = useRecoilState(currentUserState);
   const [loading, setLoading] = useState(true);
 
   useEffect(
@@ -54,11 +54,11 @@ const Home = () => {
               photoURL: displayPicture,
             });
 
-            setCurrentUser(userData);
+            setCurrentUserAtom(userData);
           } else {
             const userData = (await getDoc(userDoc(user.uid))).data();
 
-            setCurrentUser(userData);
+            setCurrentUserAtom(userData);
           }
         }
       }),
@@ -86,7 +86,7 @@ const Home = () => {
         const duration = (currentTimestamp - userTimestamp) / 60 / 60;
 
         if (duration > 1) {
-          if (currentUser) {
+          if (currentUserAtom) {
             await signOut(auth);
           }
           await signInWithEmailAndPassword(auth, email, password);
@@ -96,7 +96,7 @@ const Home = () => {
       });
     };
 
-    if (!currentUser) {
+    if (!currentUserAtom) {
       setLoading(true);
 
       checkUnverifiedUsers();

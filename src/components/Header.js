@@ -8,7 +8,7 @@ import Navigation from '@components/Navigation';
 import { MODAL } from '@components/Modal';
 
 const Header = () => {
-  const currentUser = useRecoilValue(currentUserState);
+  const currentUserAtom = useRecoilValue(currentUserState);
   const setModal = useSetRecoilState(modalState);
 
   return (
@@ -36,7 +36,7 @@ const Header = () => {
           </a>
         </Link>
         <SearchBar />
-        {currentUser ? (
+        {currentUserAtom ? (
           <Navigation />
         ) : (
           <div>

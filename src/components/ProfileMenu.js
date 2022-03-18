@@ -7,12 +7,12 @@ import { auth } from '@firebase/config';
 import { currentUserState } from '@recoil/atoms';
 
 const ProfileMenu = ({ close }) => {
-  const currentUser = useRecoilValue(currentUserState);
+  const currentUserAtom = useRecoilValue(currentUserState);
 
   return (
     <>
       <div className="absolute top-[120%] left-[-250%] w-40 bg-white rounded-sm shadow-sm  z-20">
-        <Link href={`/${currentUser.username}`}>
+        <Link href={`/${currentUserAtom.username}`}>
           <a className="profile-menu-btn">
             <UserCircleIcon />
             <span>Profile</span>

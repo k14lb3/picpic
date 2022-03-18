@@ -8,7 +8,7 @@ import { HomeIcon, ChatIcon, BellIcon } from '@heroicons/react/outline';
 import ProfileMenu from './ProfileMenu';
 
 const Navigation = () => {
-  const currentUser = useRecoilValue(currentUserState);
+  const currentUserAtom = useRecoilValue(currentUserState);
   const [profileMenu, setProfileMenu] = useState(false);
   const router = useRouter();
 
@@ -52,7 +52,7 @@ const Navigation = () => {
           onClick={() => setProfileMenu(true)}
         >
           <Image
-            src={currentUser.displayPicture}
+            src={currentUserAtom.displayPicture}
             alt="Display picture"
             layout="fill"
             objectFit="contain"
