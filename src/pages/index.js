@@ -29,7 +29,8 @@ import Header from '@components/Header';
 import Modal from '@components/Modal';
 
 const Home = () => {
-  const [currentUserAtom, setCurrentUserAtom] = useRecoilState(currentUserState);
+  const [currentUserAtom, setCurrentUserAtom] =
+    useRecoilState(currentUserState);
   const [loading, setLoading] = useState(true);
 
   useEffect(
@@ -118,10 +119,10 @@ const Home = () => {
       {loading ? (
         <Splash />
       ) : (
-        <div className="bg-downy-100 h-screen">
+        <>
           <Header />
           <Modal />
-        </div>
+        </>
       )}
     </>
   );
