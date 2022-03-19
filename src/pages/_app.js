@@ -1,14 +1,14 @@
+import Head from 'next/head';
 import { RecoilRoot } from 'recoil';
 import 'globals.css';
-import Modal from '@components/Modal';
 
 const MyApp = ({ Component, pageProps }) => {
   return (
     <RecoilRoot>
-      <>
-        <Component {...pageProps} />
-        <Modal />
-      </>
+      <Head>
+        <title>Picpic</title>
+      </Head>
+      <Component {...pageProps} />
     </RecoilRoot>
   );
 };
