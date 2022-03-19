@@ -1,6 +1,11 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { onAuthStateChanged, updateProfile } from 'firebase/auth';
+import { getDoc, setDoc } from 'firebase/firestore';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { auth } from '@firebase/config';
+import { userDoc } from '@firebase/refs';
 import { currentUserState, modalState } from '@recoil/atoms';
 import SearchBar from '@components/SearchBar';
 import Button from '@components/Button';
@@ -8,8 +13,41 @@ import Navigation from '@components/Navigation';
 import { MODAL } from '@components/Modal';
 
 const Header = () => {
-  const currentUserAtom = useRecoilValue(currentUserState);
+  const [currentUserAtom, setCurrentUserAtom] = useRecoilState(currentUserState);
   const setModal = useSetRecoilState(modalState);
+
+  useEffect(
+    () =>
+      onAuthStateChanged(auth, async (user) => {
+        if (user?.emailVerified) {
+          if (!user.photoURL) {
+            const displayPicture =
+              'https://firebasestorage.googleapis.com/v0/b/picpic-59a20.appspot.com/o/stock-imgs%2Fdp.png?alt=media&token=64fa4f1b-189c-4c48-a881-a7a65981d0fb';
+
+            const userData = {
+              email: user.email,
+              username: user.displayName,
+              displayPicture: displayPicture,
+            };
+
+            await deleteDoc(userUnverifiedDoc(user.uid));
+
+            await setDoc(userDoc(user.uid), userData);
+
+            await updateProfile(auth.currentUser, {
+              photoURL: displayPicture,
+            });
+
+            setCurrentUserAtom(userData);
+          } else {
+            const userData = (await getDoc(userDoc(user.uid))).data();
+
+            setCurrentUserAtom(userData);
+          }
+        }
+      }),
+    []
+  );
 
   return (
     <header className="sticky w-full h-16 bg-white shadow-sm x-50">

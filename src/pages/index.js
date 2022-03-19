@@ -7,64 +7,22 @@ import {
   serverTimestamp,
   getDoc,
 } from 'firebase/firestore';
-import {
-  signInWithEmailAndPassword,
-  deleteUser,
-  signOut,
-  onAuthStateChanged,
-  updateProfile,
-} from 'firebase/auth';
-import { useRecoilState } from 'recoil';
+import { signInWithEmailAndPassword, deleteUser, signOut } from 'firebase/auth';
+import { useRecoilValue } from 'recoil';
 import _ from 'lodash';
 import { auth } from '@firebase/config';
 import {
   serverTimestampDoc,
-  userDoc,
   usersUnverifiedCol,
   userUnverifiedDoc,
 } from '@firebase/refs';
 import { currentUserState } from '@recoil/atoms';
 import Splash from '@components/Splash';
 import Header from '@components/Header';
-import Modal from '@components/Modal';
 
 const Home = () => {
-  const [currentUserAtom, setCurrentUserAtom] =
-    useRecoilState(currentUserState);
+  const currentUserAtom = useRecoilValue(currentUserState);
   const [loading, setLoading] = useState(true);
-
-  useEffect(
-    () =>
-      onAuthStateChanged(auth, async (user) => {
-        if (user?.emailVerified) {
-          if (!user.photoURL) {
-            const displayPicture =
-              'https://firebasestorage.googleapis.com/v0/b/picpic-59a20.appspot.com/o/stock-imgs%2Fdp.png?alt=media&token=64fa4f1b-189c-4c48-a881-a7a65981d0fb';
-
-            const userData = {
-              email: user.email,
-              username: user.displayName,
-              displayPicture: displayPicture,
-            };
-
-            await deleteDoc(userUnverifiedDoc(user.uid));
-
-            await setDoc(userDoc(user.uid), userData);
-
-            await updateProfile(auth.currentUser, {
-              photoURL: displayPicture,
-            });
-
-            setCurrentUserAtom(userData);
-          } else {
-            const userData = (await getDoc(userDoc(user.uid))).data();
-
-            setCurrentUserAtom(userData);
-          }
-        }
-      }),
-    []
-  );
 
   useEffect(() => {
     const checkUnverifiedUsers = async () => {
