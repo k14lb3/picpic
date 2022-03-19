@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { UserCircleIcon, CogIcon } from '@heroicons/react/outline';
 import { useRecoilValue } from 'recoil';
@@ -7,6 +7,7 @@ import { auth } from '@firebase/config';
 import { currentUserState } from '@recoil/atoms';
 
 const ProfileMenu = ({ close }) => {
+  const router = useRouter();
   const currentUserAtom = useRecoilValue(currentUserState);
 
   return (
@@ -29,7 +30,10 @@ const ProfileMenu = ({ close }) => {
           className="profile-menu-btn"
           onClick={async () => {
             await signOut(auth);
-            Router.reload();
+            if (router.asPath !== '/') {
+              await router.push('/');
+            }
+            router.reload();
           }}
         >
           <span>Log Out </span>
