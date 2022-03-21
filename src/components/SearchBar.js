@@ -2,12 +2,16 @@ import { useState, useRef } from 'react';
 import { SearchIcon } from '@heroicons/react/outline';
 import { XCircleIcon } from '@heroicons/react/solid';
 
-const SearchBar = () => {
+const SearchBar = ({ className }) => {
   const inputRef = useRef(null);
   const [focus, setFocus] = useState(false);
 
   return (
-    <div className="flex items-center w-full max-w-xs h-full max-h-9 bg-downy-100 px-2 mx-10 rounded-sm">
+    <div
+      className={`flex items-center w-full max-w-xs h-full max-h-9 bg-downy-100 px-2 rounded-sm${
+        className ? ` ${className}` : ''
+      }`}
+    >
       {!focus && (
         <SearchIcon
           className="flex-shrink-0 h-5 w-5 mr-2 text-downy cursor-text"
