@@ -51,12 +51,6 @@ const Profile = () => {
     }
   }, [router]);
 
-  console.log({
-    user: user,
-    currentUserAtom: currentUserAtom,
-    router: router,
-  });
-
   return (
     <>
       {splash ? (
@@ -101,7 +95,8 @@ const Profile = () => {
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Tempora, doloremque.
                   </p>
-                  {currentUserAtom.username !== user.username && (
+                  {(!currentUserAtom ||
+                    currentUserAtom.username !== user.username) && (
                     <Button className="mt-4" label="Follow" />
                   )}
                 </div>
