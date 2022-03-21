@@ -39,9 +39,23 @@ const Header = () => {
         </Link>
         <SearchBar className="mx-auto sm:mx-0" />
         {currentUserAtom ? (
-          <>{windowWidth > 639 && <Navigation />}</>
+          <>
+            {windowWidth < 640 ? (
+              <Navigation />
+            ) : (
+              <div className="fixed bottom-5 left-5 py-4 px-2 bg-white rounded-full shadow-sm">
+                <Navigation />
+              </div>
+            )}
+          </>
         ) : (
-          <div>
+          <div
+            className={
+              windowWidth < 640
+                ? 'flex fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white py-4 px-10 rounded-full shadow-sm'
+                : ''
+            }
+          >
             <Button
               className="mr-3"
               label="Log In"
@@ -55,11 +69,6 @@ const Header = () => {
           </div>
         )}
       </div>
-      {currentUserAtom && windowWidth < 640 && (
-        <div className="fixed bottom-5 left-5 py-4 px-2 bg-white rounded-full shadow-sm">
-          <Navigation />
-        </div>
-      )}
     </header>
   );
 };
