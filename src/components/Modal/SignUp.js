@@ -57,7 +57,7 @@ const SignUp = () => {
     }
 
     if (username.length < 6) {
-      setError('Password must be 6 or more in length.');
+      setError('Username must be 6 or more in length.');
       return;
     }
 
