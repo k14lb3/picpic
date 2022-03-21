@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import {
   signInWithEmailAndPassword,
@@ -7,7 +8,7 @@ import {
 import { getDocs } from 'firebase/firestore';
 import { useSetRecoilState } from 'recoil';
 import { auth } from '@firebase/config';
-import { usersCol } from '@firebase/refs';
+import { usersCol, usersUnverifiedCol } from '@firebase/refs';
 import { modalState } from '@recoil/atoms';
 import Button from '@components/Button';
 import InputText from '@components/InputText';
@@ -15,6 +16,7 @@ import { MODAL } from '@components/Modal';
 import { isValidEmail } from '@components/Modal/SignUp';
 
 const LogIn = () => {
+  const router = useRouter();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const emailResetRef = useRef(null);
@@ -32,6 +34,13 @@ const LogIn = () => {
     const email = users.filter((data) => data.username === username)[0]?.email;
 
     if (email === undefined) {
+      const usersUnverifiedDocs = (await getDocs(usersUnverifiedCol)).docs;
+      const _users = usersUnverifiedDocs.map((doc) => doc.data());
+      const _email = _users.filter((data) => data.username === username)[0]
+        ?.email;
+
+      if (_email) return _email;
+
       throw new Error('Firebase: Error (auth/user-not-found).');
     }
 
@@ -44,6 +53,7 @@ const LogIn = () => {
     if (logInDisabled) {
       return;
     }
+
     const username = emailRef.current.value;
     const password = passwordRef.current.value;
 
@@ -59,7 +69,7 @@ const LogIn = () => {
         await signInWithEmailAndPassword(auth, email, password);
       }
 
-      setModal(null);
+      router.reload();
     } catch (e) {
       switch (e.message) {
         case 'Firebase: Error (auth/user-not-found).':
@@ -140,8 +150,8 @@ const LogIn = () => {
               Trouble Logging In?
             </h2>
             <p className="text-center mb-2">
-              Enter your email or username and we&apos;ll send you a link to reset
-              your password
+              Enter your email or username and we&apos;ll send you a link to
+              reset your password
             </p>
             <form onSubmit={sendPasswordReset}>
               <InputText
