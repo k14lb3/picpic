@@ -27,7 +27,7 @@ const Button = ({
           <Loader />
         </div>
       )}
-      <span className={`${loading ? 'invisible' : ''}`}>{label}</span>
+      <span className={`whitespace-nowrap${loading ? ' invisible' : ''}`}>{label}</span>
     </button>
   );
 };
