@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 import { modalState, currentUserState } from '@recoil/atoms';
 import SearchBar from '@components/SearchBar';
 import Button from '@components/Button';
@@ -8,6 +9,7 @@ import Navigation from '@components/Navigation';
 import { MODAL } from '@components/Modal';
 
 const Header = () => {
+  const { width: windowWidth } = useWindowDimensions();
   const currentUserAtom = useRecoilValue(currentUserState);
   const setModal = useSetRecoilState(modalState);
 
@@ -26,7 +28,7 @@ const Header = () => {
           </a>
         </Link>
         <Link href="/">
-          <a className="flex-shrink-0 relative w-8 h-8 md:hidden">
+          <a className="flex-shrink-0 relative w-8 h-8 mr-5 sm:mr-0 md:hidden">
             <Image
               src="/logo.png"
               alt="logo"
@@ -35,9 +37,9 @@ const Header = () => {
             />
           </a>
         </Link>
-        <SearchBar />
+        <SearchBar className="mx-auto sm:mx-0" />
         {currentUserAtom ? (
-          <Navigation />
+          <>{windowWidth > 639 && <Navigation />}</>
         ) : (
           <div>
             <Button
@@ -53,6 +55,11 @@ const Header = () => {
           </div>
         )}
       </div>
+      {windowWidth < 640 && (
+        <div className="fixed bottom-5 left-5 py-4 px-2 bg-white rounded-full shadow-sm">
+          <Navigation />
+        </div>
+      )}
     </header>
   );
 };

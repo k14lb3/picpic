@@ -13,7 +13,7 @@ const Navigation = () => {
   const router = useRouter();
 
   return (
-    <nav className="flex items-center">
+    <nav className="flex flex-col items-center sm:flex-row">
       <div
         className={`nav-btn${
           router.pathname === '/' && !profileMenu ? ' pointer-events-none' : ''
