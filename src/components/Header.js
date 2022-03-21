@@ -41,11 +41,11 @@ const Header = () => {
         {currentUserAtom ? (
           <>
             {windowWidth < 640 ? (
-              <Navigation />
-            ) : (
               <div className="fixed bottom-5 left-5 py-4 px-2 bg-white rounded-full shadow-sm">
                 <Navigation />
               </div>
+            ) : (
+              <Navigation />
             )}
           </>
         ) : (
