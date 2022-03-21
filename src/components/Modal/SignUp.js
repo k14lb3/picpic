@@ -144,7 +144,7 @@ const SignUp = () => {
             </h2>
             <p className="mb-8 text-center">
               Thanks for signing up with Picpic! Before you get started we need
-              to verify your email address. We've sent an email to{' '}
+              to verify your email address. We&apos;ve sent an email to&nbsp;
               <span className="font-bold">{auth.currentUser.email}</span>.
             </p>
             <Button

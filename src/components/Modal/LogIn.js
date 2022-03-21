@@ -140,7 +140,7 @@ const LogIn = () => {
               Trouble Logging In?
             </h2>
             <p className="text-center mb-2">
-              Enter your email or username and we'll send you a link to reset
+              Enter your email or username and we&apos;ll send you a link to reset
               your password
             </p>
             <form onSubmit={sendPasswordReset}>

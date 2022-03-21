@@ -96,16 +96,16 @@ const Profile = () => {
                     Tempora, doloremque.
                   </p>
                   {(!currentUserAtom ||
-                    currentUserAtom.username !== user.username) && (
-                    <Button className="mt-4" label="Follow" />
-                  )}
+                    (currentUserAtom.username !== user.username)) && (
+                      <Button className="mt-4" label="Follow" />
+                    )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
               </>
             ) : (
               <>
                 <h2 className="mb-4 text-2xl font-bold text-center">
-                  Sorry, this page isn't available
+                  Sorry, this page isn&apos;t available
                 </h2>
                 <p className="text-center">
                   The link you followed may be broken, or the page may have been
