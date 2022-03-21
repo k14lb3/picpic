@@ -72,9 +72,9 @@ const LogIn = () => {
             'Sorry, your password was incorrect. Please double-check your password.'
           );
       }
-    }
 
-    setLoading(false);
+      setLoading(false);
+    }
   };
 
   const sendPasswordReset = async (e) => {

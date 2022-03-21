@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
-import Head from 'next/head';
 import {
+  getDoc,
   getDocs,
   setDoc,
   deleteDoc,
   serverTimestamp,
-  getDoc,
 } from 'firebase/firestore';
 import { signInWithEmailAndPassword, deleteUser, signOut } from 'firebase/auth';
 import { useRecoilValue } from 'recoil';
-import _ from 'lodash';
 import { auth } from '@firebase/config';
 import {
   serverTimestampDoc,
@@ -22,7 +20,7 @@ import Header from '@components/Header';
 
 const Home = () => {
   const currentUserAtom = useRecoilValue(currentUserState);
-  const [loading, setLoading] = useState(true);
+  const [splash, setSplash] = useState(false);
 
   useEffect(() => {
     const checkUnverifiedUsers = async () => {
@@ -56,25 +54,17 @@ const Home = () => {
     };
 
     if (!currentUserAtom) {
-      setLoading(true);
+      setSplash(true);
 
       checkUnverifiedUsers();
-    }
 
-    setLoading(false);
+      setSplash(false);
+    }
   }, []);
 
   return (
     <>
-      <Head>
-        <title>Picpic</title>
-        <meta
-          name="Picpic"
-          content="Image sharing and social media platform."
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      {loading ? (
+      {splash ? (
         <Splash />
       ) : (
         <>

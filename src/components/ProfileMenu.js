@@ -36,7 +36,7 @@ const ProfileMenu = ({ close }) => {
             router.reload();
           }}
         >
-          <span>Log Out </span>
+          <span>Log Out</span>
         </div>
       </div>
       <div
