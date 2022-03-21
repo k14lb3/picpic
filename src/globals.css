@@ -9,7 +9,7 @@
 }
 
 #__next {
-  @apply h-screen bg-downy-50;
+  @apply flex flex-col h-screen bg-downy-50;
 }
 
 .nav-btn {

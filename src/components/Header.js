@@ -14,7 +14,7 @@ const Header = () => {
   const setModal = useSetRecoilState(modalState);
 
   return (
-    <header className="sticky w-full h-16 bg-white border-solid border-b border-downy-100 z-40">
+    <header className="fixed w-full h-16 bg-white border-solid border-b border-downy-100 z-40">
       <div className="flex justify-between items-center max-w-4xl h-full m-auto px-5">
         <Link href="/">
           <a className="hidden relative w-full max-w-[57px] h-full max-h-[30px] md:block">
@@ -41,7 +41,7 @@ const Header = () => {
         {currentUserAtom ? (
           <>
             {windowWidth < 640 ? (
-              <div className="fixed bottom-5 left-5 py-4 px-2 bg-white rounded-full shadow-sm shadow-gray-300">
+              <div className="fixed bottom-28 left-5 py-4 px-2 bg-white rounded-full shadow-sm shadow-gray-300">
                 <Navigation />
               </div>
             ) : (
@@ -52,7 +52,7 @@ const Header = () => {
           <div
             className={
               windowWidth < 640
-                ? 'flex fixed bottom-5 left-1/2 transform -translate-x-1/2 bg-white py-4 px-10 rounded-full shadow-sm'
+                ? 'flex fixed bottom-28 left-1/2 transform -translate-x-1/2 bg-white py-4 px-10 rounded-full shadow-sm shadow-gray-300'
                 : ''
             }
           >

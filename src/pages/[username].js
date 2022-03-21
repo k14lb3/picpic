@@ -9,6 +9,7 @@ import { usersCol, userFollowersCol, userFollowingCol } from '@firebase/refs';
 import Button from '@components/Button';
 import Splash from '@components/Splash';
 import Header from '@components/Header';
+import Footer from '@components/Footer';
 
 const Profile = () => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const Profile = () => {
       ) : (
         <>
           <Header />
-          <main className="flex flex-col w-full h-auto pt-5 px-5">
+          <main className="w-full pt-[5.25rem] px-5">
             {user ? (
               <>
                 <Head>
@@ -96,9 +97,9 @@ const Profile = () => {
                     Tempora, doloremque.
                   </p>
                   {(!currentUserAtom ||
-                    (currentUserAtom.username !== user.username)) && (
-                      <Button className="mt-4" label="Follow" />
-                    )}
+                    currentUserAtom.username !== user.username) && (
+                    <Button className="mt-4" label="Follow" />
+                  )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
               </>
@@ -114,6 +115,7 @@ const Profile = () => {
               </>
             )}
           </main>
+          <Footer />
         </>
       )}
     </>
