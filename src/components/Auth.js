@@ -56,9 +56,9 @@ const Auth = ({ children }) => {
             following: userfollowing,
           });
         }
-
-        setSplash(false);
       }
+
+      setSplash(false);
 
       return unsubscribe;
     });
