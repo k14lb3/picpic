@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { UserCircleIcon, CogIcon } from '@heroicons/react/outline';
 import { useRecoilValue } from 'recoil';
-import useWindowDimensions from '@hooks/useWindowDimensions';
+import useWindowDimensions from '@hooks/useWindowDimensions.js';
 import { auth } from '@firebase/config';
 import { currentUserState } from '@recoil/atoms';
 
@@ -31,9 +31,8 @@ const ProfileMenu = ({ close }) => {
             <span>Settings</span>
           </a>
         </Link>
-        <div className="w-full h-[1px] bg-downy-100" />
         <div
-          className="group relative profile-menu-btn rounded-b-sm"
+          className="group relative profile-menu-btn rounded-b-sm border-solid border-t border-downy-100"
           onClick={async () => {
             await signOut(auth);
             if (router.asPath !== '/') {
