@@ -41,6 +41,8 @@ const Profile = () => {
             followers: userFollowers,
             following: userfollowing,
           });
+        } else {
+          setUser(null);
         }
       }
 
@@ -96,8 +98,9 @@ const Profile = () => {
                     Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                     Tempora, doloremque.
                   </p>
-                  {(!currentUserAtom ||
-                    currentUserAtom.username !== user.username) && (
+                  {currentUserAtom?.username === user.username ? (
+                    <Button className="mt-4" label="Edit profile" />
+                  ) : (
                     <Button className="mt-4" label="Follow" />
                   )}
                 </div>
