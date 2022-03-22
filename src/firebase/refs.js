@@ -12,4 +12,4 @@ export const usersUnverifiedCol = collection(db, 'users_unverified');
 export const userUnverifiedDoc = (id) => doc(usersUnverifiedCol, id);
 export const usersRef = ref(storage, 'users')
 export const userRef = (id) => ref(usersRef, `/${id}`)
-export const defaultDpRef = ref(storage, 'stock-imgs/dp')
+export const defaultDpRef = ref(storage, 'stock/dp')
