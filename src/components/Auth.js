@@ -22,7 +22,22 @@ const Auth = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user?.emailVerified) {
-        if (!user.photoURL) {
+        if (user.photoURL) {
+          const _user = (await getDoc(userDoc(user.uid))).data();
+          const userFollowersDocs = (await getDocs(userFollowersCol(user.uid)))
+            .docs;
+          const userFollowers = userFollowersDocs.map((doc) => doc.id);
+
+          const userFollowingDocs = (await getDocs(userFollowingCol(user.uid)))
+            .docs;
+          const userfollowing = userFollowingDocs.map((doc) => doc.id);
+
+          setCurrentUserAtom({
+            ..._user,
+            followers: userFollowers,
+            following: userfollowing,
+          });
+        } else {
           const defaultDpUrl = await getDownloadURL(defaultDpRef);
 
           const _user = {
@@ -40,21 +55,6 @@ const Auth = ({ children }) => {
           });
 
           setCurrentUserAtom(_user);
-        } else {
-          const _user = (await getDoc(userDoc(user.uid))).data();
-          const userFollowersDocs = (await getDocs(userFollowersCol(user.uid)))
-            .docs;
-          const userFollowers = userFollowersDocs.map((doc) => doc.id);
-
-          const userFollowingDocs = (await getDocs(userFollowingCol(user.uid)))
-            .docs;
-          const userfollowing = userFollowingDocs.map((doc) => doc.id);
-
-          setCurrentUserAtom({
-            ..._user,
-            followers: userFollowers,
-            following: userfollowing,
-          });
         }
       }
 
