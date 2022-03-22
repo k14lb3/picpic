@@ -14,7 +14,7 @@ const ProfileMenu = ({ close }) => {
 
   return (
     <>
-      <div className="absolute top-[-157%] left-[150%] sm:top-[150%] sm:left-[-258%] w-40 bg-white rounded-sm shadow-sm z-20">
+      <div className="absolute top-[-157%] left-[150%] sm:top-[150%] sm:left-[-258%] w-40 bg-white rounded-sm shadow-sm shadow-gray-300 z-20">
         <Link href={`/${currentUserAtom.username}`}>
           <a className="group relative profile-menu-btn rounded-t-sm">
             <UserCircleIcon />
