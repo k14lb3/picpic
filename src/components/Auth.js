@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
-import { getDownloadURL } from 'firebase/storage';
+import { ref, getDownloadURL} from 'firebase/storage';
 import { getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
 import { auth } from '@firebase/config';
 import {
@@ -8,7 +8,7 @@ import {
   userDoc,
   userFollowersCol,
   userFollowingCol,
-  defaultDpRef,
+  stockRef,
 } from '@firebase/refs';
 import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '@recoil/atoms';
@@ -38,7 +38,7 @@ const Auth = ({ children }) => {
             following: userfollowing,
           });
         } else {
-          const defaultDpUrl = await getDownloadURL(defaultDpRef);
+          const defaultDpUrl = await getDownloadURL(ref(stockRef, '/dp'));
 
           const _user = {
             email: user.email,
