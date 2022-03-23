@@ -8,6 +8,18 @@
   }
 }
 
+*::-webkit-scrollbar {
+  @apply w-2;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-downy-200;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-downy-400 rounded-full hover:bg-downy-450 active:bg-downy-600;
+}
+
 #__next {
   @apply flex flex-col h-screen bg-downy-50;
 }
