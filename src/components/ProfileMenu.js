@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { signOut } from 'firebase/auth';
 import { UserCircleIcon, CogIcon } from '@heroicons/react/outline';
 import { useRecoilValue } from 'recoil';
-import useWindowDimensions from '@hooks/useWindowDimensions.js';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 import { auth } from '@firebase/config';
 import { currentUserState } from '@recoil/atoms';
 

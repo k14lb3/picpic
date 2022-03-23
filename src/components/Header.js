@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import useWindowDimensions from '@hooks/useWindowDimensions.js';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 import { modalState, currentUserState } from '@recoil/atoms';
 import SearchBar from '@components/SearchBar';
 import Button from '@components/Button';

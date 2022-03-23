@@ -7,6 +7,7 @@ import {
 } from 'firebase/auth';
 import { setDoc, serverTimestamp } from 'firebase/firestore';
 import { useSetRecoilState } from 'recoil';
+import { isValidEmail, isValidUsername } from 'helpers';
 import { auth } from '@firebase/config';
 import { modalState } from '@recoil/atoms';
 import { userUnverifiedDoc } from '@firebase/refs';
@@ -15,11 +16,6 @@ import InputText from '@components/InputText';
 import { MODAL } from '@components/Modal';
 
 // https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
-
-export const isValidEmail = (email) =>
-  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-
-const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
 
 const SignUp = () => {
   const emailRef = useRef(null);

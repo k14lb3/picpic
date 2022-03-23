@@ -1,3 +1,8 @@
+export const isValidEmail = (email) =>
+  /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+
+export const isValidUsername = (username) => /^[a-zA-Z0-9\_\.]+$/.test(username);
+
 export const isValidImageFile = (filename) =>
   /.*\.(jpg|jpeg|png)/i.test(filename);
 
