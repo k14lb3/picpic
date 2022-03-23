@@ -191,7 +191,12 @@ const Profile = () => {
                       <span className="font-bold">
                         {user?.followers ? user.followers.length : '0'}{' '}
                       </span>
-                      follower{user?.followers.length === 1 ? '' : 's'}
+                      follower
+                      {user?.followers
+                        ? user.followers.length === 1
+                          ? ''
+                          : 's'
+                        : ''}
                     </p>
                     <p>
                       <span className="font-bold">
