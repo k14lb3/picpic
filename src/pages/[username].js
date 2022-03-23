@@ -209,14 +209,11 @@ const Profile = () => {
                       following
                     </p>
                   </div>
-                  <p className="text-center">
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                    Tempora, doloremque.
-                  </p>
+                  {user?.bio && <p className="text-center mb-4">{user.bio}</p>}
                   {currentUserAtom?.username === user.username ? (
-                    <Button className="mt-4" label="Edit profile" />
+                    <Button label="Edit profile" />
                   ) : (
-                    <Button className="mt-4" label="Follow" />
+                    <Button abel="Follow" />
                   )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
