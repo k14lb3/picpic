@@ -31,3 +31,7 @@
 .close-btn {
   @apply w-6 h-6 text-downy ease-in cursor-pointer hover:duration-200 hover:scale-90;
 }
+
+.change-display-picture-btn {
+  @apply py-2 text-center tracking-wide font-medium border-solid border-t border-downy-200 cursor-pointer select-none hover:bg-downy-50;
+}
