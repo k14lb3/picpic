@@ -1,13 +1,13 @@
 const SIZE = {
-  SM: 'after:w-4 after:h-4 after:border-2',
-  MD: 'after:w-6 after:h-6 after:border-4',
-  LG: 'after:w-12 after:h-12 after:border-8',
+  SM: 'w-4 h-4 border-2',
+  MD: 'w-6 h-6 border-4',
+  LG: 'w-12 h-12 border-8',
 };
 
 const Loader = ({ size, color, bgColor, className, ...props }) => {
   return (
     <div
-      className={`flex justify-center after:content-[''] ${
+      className={`flex justify-center ${
         size === 'sm'
           ? SIZE.SM
           : size === 'md'
@@ -15,18 +15,18 @@ const Loader = ({ size, color, bgColor, className, ...props }) => {
           : size === 'lg'
           ? SIZE.LG
           : ''
-      } after:border-solid after:border-${
-        bgColor ? bgColor : 'downy-100'
-      } after:border-t-${
-        color ? color : 'downy'
-      } after:rounded-full animate-spin${className ? ` ${className}` : ''}`}
+      } border-solid border-${bgColor} border-t-${color} rounded-full animate-spin${
+        className ? ` ${className}` : ''
+      }`}
       {...props}
-    ></div>
+    />
   );
 };
 
 Loader.defaultProps = {
   size: 'sm',
+  color: 'downy',
+  bgColor: 'downy-100',
 };
 
 export default Loader;
