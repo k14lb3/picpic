@@ -156,8 +156,12 @@ const Profile = () => {
                     hidden
                   />
                   <div
-                    className="relative h-full w-full max-h-36 max-w-[8rem] mx-auto mb-2 rounded-full overflow-hidden cursor-pointer"
+                    className={`relative h-full w-full max-h-36 max-w-[8rem] mx-auto mb-2 rounded-full overflow-hidden${
+                      currentUserAtom ? ' cursor-pointer' : ''
+                    }`}
                     onClick={() => {
+                      if (!currentUserAtom) return;
+
                       if (displayPictureLoading) return;
 
                       if (
