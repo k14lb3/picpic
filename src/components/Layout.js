@@ -1,5 +1,6 @@
 import Header from '@components/Header';
 import Footer from '@components/Footer';
+import Modal from '@components/Modal';
 
 const Layout = ({ children, className }) => {
   return (
@@ -7,6 +8,7 @@ const Layout = ({ children, className }) => {
       <Header />
       <main className={className}>{children}</main>
       <Footer />
+      <Modal />
     </>
   );
 };

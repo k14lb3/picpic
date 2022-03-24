@@ -7,7 +7,6 @@ import { userUnverifiedDoc, userDoc, stockRef } from '@firebase/refs';
 import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '@recoil/atoms';
 import Splash from '@components/Splash';
-import Modal from '@components/Modal';
 
 const Auth = ({ children }) => {
   const setCurrentUserAtom = useSetRecoilState(currentUserState);
@@ -47,18 +46,7 @@ const Auth = ({ children }) => {
     });
   }, []);
 
-  return (
-    <>
-      {splash ? (
-        <Splash />
-      ) : (
-        <>
-          {children}
-          <Modal />
-        </>
-      )}
-    </>
-  );
+  return <>{splash ? <Splash /> : <>{children}</>}</>;
 };
 
 export default Auth;
