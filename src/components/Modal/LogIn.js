@@ -13,7 +13,7 @@ import { modalState } from '@recoil/atoms';
 import Button from '@components/Button';
 import InputText from '@components/InputText';
 import { MODAL } from '@components/Modal';
-import { isValidEmail } from '@components/Modal/SignUp';
+import { isValidEmail } from 'helpers';
 
 const LogIn = () => {
   const router = useRouter();

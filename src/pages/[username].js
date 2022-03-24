@@ -9,32 +9,28 @@ import {
   uploadString,
   deleteObject,
 } from 'firebase/storage';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { resizeImage } from 'helpers';
-import { currentUserState } from '@recoil/atoms';
+import { currentUserState, modalState } from '@recoil/atoms';
 import { auth } from '@firebase/config';
-import {
-  userDoc,
-  usersCol,
-  userFollowersCol,
-  userFollowingCol,
-  userRef,
-  stockRef,
-} from '@firebase/refs';
+import { userDoc, usersCol, userRef, stockRef } from '@firebase/refs';
 import Layout from '@components/Layout';
 import Button from '@components/Button';
 import Splash from '@components/Splash';
 import ChangeDisplayPicture from '@components/ChangeDisplayPicture';
 import Loader from '@components/Loader';
 import NotFound from '@pages/404';
+import { MODAL } from '@components/Modal';
 
 const Profile = () => {
   const inputFileRef = useRef(null);
   const router = useRouter();
   const [currentUserAtom, setCurrentUserAtom] =
     useRecoilState(currentUserState);
+  const setModalAtom = useSetRecoilState(modalState);
   const [user, setUser] = useState(null);
   const [changeDisplayPicture, setChangeDisplayPicture] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
   const [displayPictureLoading, setDisplayPictureLoading] = useState(false);
   const [splash, setSplash] = useState(true);
 
@@ -90,6 +86,16 @@ const Profile = () => {
     setDisplayPictureLoading(false);
   };
 
+  const followUser = async () => {
+    if (!currentUserAtom) setModalAtom(MODAL.LOGIN);
+
+    if (followLoading) return;
+
+    setFollowLoading(true);
+
+    setFollowLoading(false);
+  };
+
   useEffect(() => {
     const getUser = async () => {
       const username = router.query.username;
@@ -101,18 +107,7 @@ const Profile = () => {
         const _user = users.filter((data) => data.username === username)[0];
 
         if (_user) {
-          const userFollowersDocs = (await getDocs(userFollowersCol(_user.uid)))
-            .docs;
-          const userFollowers = userFollowersDocs.map((doc) => doc.id);
-          const userFollowingDocs = (await getDocs(userFollowingCol(_user.uid)))
-            .docs;
-          const userfollowing = userFollowingDocs.map((doc) => doc.id);
-
-          setUser({
-            ..._user,
-            followers: userFollowers,
-            following: userfollowing,
-          });
+          setUser(_user);
         } else {
           setUser(null);
         }
@@ -210,9 +205,12 @@ const Profile = () => {
                   </div>
                   {user?.bio && <p className="text-center mb-4">{user.bio}</p>}
                   {currentUserAtom?.username === user.username ? (
-                    <Button label="Edit profile" />
+                    <Button
+                      label="Edit profile"
+                      onClick={() => router.push('/settings/profile')}
+                    />
                   ) : (
-                    <Button label="Follow" />
+                    <Button label="Follow" onClick={followUser} />
                   )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />

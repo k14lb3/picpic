@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
-import { ref, getDownloadURL} from 'firebase/storage';
+import { ref, getDownloadURL } from 'firebase/storage';
 import { getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
 import { auth } from '@firebase/config';
 import {
   userUnverifiedDoc,
   userDoc,
-  userFollowersCol,
-  userFollowingCol,
   stockRef,
 } from '@firebase/refs';
 import { useSetRecoilState } from 'recoil';
@@ -23,20 +21,7 @@ const Auth = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user?.emailVerified) {
         if (user.photoURL) {
-          const _user = (await getDoc(userDoc(user.uid))).data();
-          const userFollowersDocs = (await getDocs(userFollowersCol(user.uid)))
-            .docs;
-          const userFollowers = userFollowersDocs.map((doc) => doc.id);
-
-          const userFollowingDocs = (await getDocs(userFollowingCol(user.uid)))
-            .docs;
-          const userfollowing = userFollowingDocs.map((doc) => doc.id);
-
-          setCurrentUserAtom({
-            ..._user,
-            followers: userFollowers,
-            following: userfollowing,
-          });
+          setCurrentUserAtom((await getDoc(userDoc(user.uid))).data());
         } else {
           const defaultDpUrl = await getDownloadURL(ref(stockRef, '/dp'));
 
