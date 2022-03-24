@@ -1,13 +1,9 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, updateProfile } from 'firebase/auth';
 import { ref, getDownloadURL } from 'firebase/storage';
-import { getDoc, getDocs, setDoc, deleteDoc } from 'firebase/firestore';
+import { getDoc, setDoc, deleteDoc } from 'firebase/firestore';
 import { auth } from '@firebase/config';
-import {
-  userUnverifiedDoc,
-  userDoc,
-  stockRef,
-} from '@firebase/refs';
+import { userUnverifiedDoc, userDoc, stockRef } from '@firebase/refs';
 import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '@recoil/atoms';
 import Splash from '@components/Splash';
@@ -29,6 +25,8 @@ const Auth = ({ children }) => {
             email: user.email,
             username: user.displayName,
             displayPicture: defaultDpUrl,
+            followers: [],
+            following: [],
           };
 
           await deleteDoc(userUnverifiedDoc(user.uid));
