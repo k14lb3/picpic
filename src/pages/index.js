@@ -16,8 +16,7 @@ import {
 } from '@firebase/refs';
 import { currentUserState } from '@recoil/atoms';
 import Splash from '@components/Splash';
-import Header from '@components/Header';
-import Footer from '@components/Footer';
+import Layout from '@components/Layout';
 
 const Home = () => {
   const currentUserAtom = useRecoilValue(currentUserState);
@@ -63,18 +62,7 @@ const Home = () => {
     }
   }, []);
 
-  return (
-    <>
-      {splash ? (
-        <Splash />
-      ) : (
-        <>
-          <Header />
-          <Footer />
-        </>
-      )}
-    </>
-  );
+  return <>{splash ? <Splash /> : <Layout></Layout>}</>;
 };
 
 export default Home;
