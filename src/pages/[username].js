@@ -27,7 +27,7 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 import ChangeDisplayPicture from '@components/ChangeDisplayPicture';
 import Loader from '@components/Loader';
-import NotFound from '@components/NotFound';
+import NotFound from '@pages/404';
 
 const Profile = () => {
   const inputFileRef = useRef(null);
@@ -214,7 +214,7 @@ const Profile = () => {
                   {currentUserAtom?.username === user.username ? (
                     <Button label="Edit profile" />
                   ) : (
-                    <Button abel="Follow" />
+                    <Button label="Follow" />
                   )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
