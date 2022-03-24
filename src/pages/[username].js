@@ -3,12 +3,13 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import {
+  serverTimestamp,
   getDoc,
   getDocs,
   setDoc,
   updateDoc,
-  serverTimestamp,
   arrayUnion,
+  arrayRemove,
 } from 'firebase/firestore';
 import {
   ref,
@@ -16,7 +17,10 @@ import {
   uploadString,
   deleteObject,
 } from 'firebase/storage';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useSetRecoilState,
+} from 'recoil';
 import { resizeImage } from 'helpers';
 import { currentUserState, modalState } from '@recoil/atoms';
 import { auth } from '@firebase/config';
@@ -146,7 +150,45 @@ const Profile = () => {
     setFollowLoading(false);
   };
 
-  const unfollowUser = async () => {};
+  const unfollowUser = async () => {
+    if (unfollowLoading) return;
+
+    setUnfollowLoading(true);
+
+    const { timestamp: followTimestamp } = currentUserAtom.following.filter(
+      (following) => following.uid === user.uid
+    )[0];
+
+    await updateDoc(userDoc(user.uid), {
+      followers: arrayRemove({
+        uid: auth.currentUser.uid,
+        timestamp: followTimestamp,
+      }),
+    });
+
+    await updateDoc(userDoc(auth.currentUser.uid), {
+      following: arrayRemove({
+        uid: user.uid,
+        timestamp: followTimestamp,
+      }),
+    });
+
+    setUser((prevUser) => ({
+      ...prevUser,
+      followers: prevUser.followers.filter(
+        (follower) => follower.uid !== auth.currentUser.uid
+      ),
+    }));
+
+    setCurrentUserAtom((prevCurrentUserAtom) => ({
+      ...prevCurrentUserAtom,
+      following: prevCurrentUserAtom.following.filter(
+        (following) => following.uid !== user.uid
+      ),
+    }));
+
+    setUnfollowLoading(false);
+  };
 
   const isFollowing = () =>
     currentUserAtom.following.filter(({ uid }) => uid === user.uid)[0];
