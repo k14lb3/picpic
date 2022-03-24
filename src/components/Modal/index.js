@@ -25,7 +25,7 @@ const Modal = () => {
     reactDom.createPortal(
       <div className="flex items-center justify-center fixed top-0 left-0 w-full h-full z-50">
         <div
-          className="absolute w-full h-full bg-black bg-opacity-20"
+          className="absolute w-full h-full bg-black bg-opacity-10"
           onClick={() => setModalAtom(null)}
         />
         <div className="relative w-full h-full p-8 bg-white shadow-sm z-10 sm:max-w-sm sm:h-auto">
