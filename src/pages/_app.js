@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { RecoilRoot } from 'recoil';
-import Auth from '@components/Auth';
+import Root from '@components/Root';
 import 'globals.css';
 
 const MyApp = ({ Component, pageProps }) => {
@@ -10,9 +10,9 @@ const MyApp = ({ Component, pageProps }) => {
         <title>Picpic</title>
       </Head>
       <RecoilRoot>
-        <Auth>
+        <Root>
           <Component {...pageProps} />
-        </Auth>
+        </Root>
       </RecoilRoot>
     </>
   );

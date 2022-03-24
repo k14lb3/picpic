@@ -8,7 +8,7 @@ import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '@recoil/atoms';
 import Splash from '@components/Splash';
 
-const Auth = ({ children }) => {
+const Root = ({ children }) => {
   const setCurrentUserAtom = useSetRecoilState(currentUserState);
   const [splash, setSplash] = useState(true);
 
@@ -49,4 +49,4 @@ const Auth = ({ children }) => {
   return <>{splash ? <Splash /> : <>{children}</>}</>;
 };
 
-export default Auth;
+export default Root;
