@@ -2,7 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { getDocs, updateDoc } from 'firebase/firestore';
+import {
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+  serverTimestamp,
+  arrayUnion,
+} from 'firebase/firestore';
 import {
   ref,
   getDownloadURL,
@@ -13,7 +20,13 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { resizeImage } from 'helpers';
 import { currentUserState, modalState } from '@recoil/atoms';
 import { auth } from '@firebase/config';
-import { userDoc, usersCol, userRef, stockRef } from '@firebase/refs';
+import {
+  serverTimestampDoc,
+  userDoc,
+  usersCol,
+  userRef,
+  stockRef,
+} from '@firebase/refs';
 import Layout from '@components/Layout';
 import Button from '@components/Button';
 import Splash from '@components/Splash';
@@ -31,6 +44,7 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [changeDisplayPicture, setChangeDisplayPicture] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
+  const [unfollowLoading, setUnfollowLoading] = useState(false);
   const [displayPictureLoading, setDisplayPictureLoading] = useState(false);
   const [splash, setSplash] = useState(true);
 
@@ -93,8 +107,49 @@ const Profile = () => {
 
     setFollowLoading(true);
 
+    await setDoc(serverTimestampDoc, {
+      timestamp: serverTimestamp(),
+    });
+
+    const { timestamp: currentTimestamp } = (
+      await getDoc(serverTimestampDoc)
+    ).data();
+
+    const _currentUser = {
+      uid: auth.currentUser.uid,
+      timestamp: currentTimestamp,
+    };
+
+    const _user = {
+      uid: user.uid,
+      timestamp: currentTimestamp,
+    };
+
+    await updateDoc(userDoc(user.uid), {
+      followers: arrayUnion(_currentUser),
+    });
+
+    await updateDoc(userDoc(auth.currentUser.uid), {
+      following: arrayUnion(_user),
+    });
+
+    setUser((prevUser) => ({
+      ...prevUser,
+      followers: [...prevUser.followers, _currentUser],
+    }));
+
+    setCurrentUserAtom((prevCurrentUserAtom) => ({
+      ...prevCurrentUserAtom,
+      following: [...prevCurrentUserAtom.following, _user],
+    }));
+
     setFollowLoading(false);
   };
+
+  const unfollowUser = async () => {};
+
+  const isFollowing = () =>
+    currentUserAtom.following.filter(({ uid }) => uid === user.uid)[0];
 
   useEffect(() => {
     const getUser = async () => {
@@ -190,15 +245,11 @@ const Profile = () => {
                         {user?.followers ? user.followers.length : '0'}{' '}
                       </span>
                       follower
-                      {user?.followers
-                        ? user.followers.length === 1
-                          ? ''
-                          : 's'
-                        : ''}
+                      {user.followers.length !== 1 ? 's' : ''}
                     </p>
                     <p>
                       <span className="font-bold">
-                        {user?.following ? user.following.length : '0'}{' '}
+                        {user.following.length}{' '}
                       </span>
                       following
                     </p>
@@ -209,8 +260,19 @@ const Profile = () => {
                       label="Edit profile"
                       onClick={() => router.push('/settings/profile')}
                     />
+                  ) : isFollowing() ? (
+                    <Button
+                      outlined
+                      loading={unfollowLoading}
+                      label="Unfollow"
+                      onClick={unfollowUser}
+                    />
                   ) : (
-                    <Button label="Follow" onClick={followUser} />
+                    <Button
+                      loading={followLoading}
+                      label="Follow"
+                      onClick={followUser}
+                    />
                   )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
