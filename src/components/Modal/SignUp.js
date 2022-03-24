@@ -15,8 +15,6 @@ import Button from '@components/Button';
 import InputText from '@components/InputText';
 import { MODAL } from '@components/Modal';
 
-// https://www.simplilearn.com/tutorials/javascript-tutorial/email-validation-in-javascript
-
 const SignUp = () => {
   const emailRef = useRef(null);
   const usernameRef = useRef(null);
@@ -26,7 +24,7 @@ const SignUp = () => {
   const [signUpDisabled, setSignUpDisabled] = useState(true);
   const [resendEmailDisabled, setResendEmailDisabled] = useState(true);
   const [verificationSent, setVerificationSent] = useState(false);
-  const setModal = useSetRecoilState(modalState);
+  const setModalAtom = useSetRecoilState(modalState);
 
   const signUp = async (e) => {
     e.preventDefault();
@@ -186,7 +184,7 @@ const SignUp = () => {
                 Already have an account?
                 <span
                   className="text-downy ml-1 cursor-pointer hover:underline"
-                  onClick={() => setModal(MODAL.LOGIN)}
+                  onClick={() => setModalAtom(MODAL.LOGIN)}
                 >
                   Log In
                 </span>

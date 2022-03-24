@@ -26,7 +26,7 @@ const LogIn = () => {
   const [forgotPassword, setForgotPassword] = useState(false);
   const [sendPasswordResetDisabled, setSendPasswordResetDisabled] =
     useState(true);
-  const setModal = useSetRecoilState(modalState);
+  const setModalAtom = useSetRecoilState(modalState);
 
   const getEmailFromUsername = async (username) => {
     const usersDocs = (await getDocs(usersCol)).docs;
@@ -212,7 +212,7 @@ const LogIn = () => {
                 Dont have an account?
                 <span
                   className="text-downy ml-1 cursor-pointer hover:underline"
-                  onClick={() => setModal(MODAL.SIGNUP)}
+                  onClick={() => setModalAtom(MODAL.SIGNUP)}
                 >
                   Sign Up
                 </span>
