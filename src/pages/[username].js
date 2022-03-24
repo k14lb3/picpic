@@ -21,10 +21,9 @@ import {
   userRef,
   stockRef,
 } from '@firebase/refs';
+import Layout from '@components/Layout';
 import Button from '@components/Button';
 import Splash from '@components/Splash';
-import Header from '@components/Header';
-import Footer from '@components/Footer';
 import ChangeDisplayPicture from '@components/ChangeDisplayPicture';
 import Loader from '@components/Loader';
 import NotFound from '@pages/404';
@@ -143,11 +142,10 @@ const Profile = () => {
         <>
           {user ? (
             <>
-              <Header />
-              <main className="w-full pt-[5.25rem] px-5">
-                <Head>
-                  <title>{user.username || 'Page Not Found'}</title>
-                </Head>
+              <Head>
+                <title>{user.username || 'Page Not Found'}</title>
+              </Head>
+              <Layout>
                 <div className="flex flex-col items-center w-fit max-w-md mx-auto mb-8">
                   <input
                     ref={inputFileRef}
@@ -218,15 +216,14 @@ const Profile = () => {
                   )}
                 </div>
                 <hr className="w-full max-w-[30rem] h-[2px] mx-auto bg-downy" />
-              </main>
-              <Footer />
-              {changeDisplayPicture && (
-                <ChangeDisplayPicture
-                  close={() => setChangeDisplayPicture(false)}
-                  addImage={() => inputFileRef.current.click()}
-                  removeImage={removeImage}
-                />
-              )}
+                {changeDisplayPicture && (
+                  <ChangeDisplayPicture
+                    close={() => setChangeDisplayPicture(false)}
+                    addImage={() => inputFileRef.current.click()}
+                    removeImage={removeImage}
+                  />
+                )}
+              </Layout>
             </>
           ) : (
             <NotFound />
