@@ -25,7 +25,7 @@ const ProfileMenu = ({ close }) => {
             )}
           </a>
         </Link>
-        <Link href="/settings">
+        <Link href="/settings/profile">
           <a className="profile-menu-btn">
             <CogIcon />
             <span>Settings</span>
