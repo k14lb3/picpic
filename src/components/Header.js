@@ -11,7 +11,7 @@ import { MODAL } from '@components/Modal';
 const Header = () => {
   const { width: windowWidth } = useWindowDimensions();
   const currentUserAtom = useRecoilValue(currentUserState);
-  const setModal = useSetRecoilState(modalState);
+  const setModalAtom = useSetRecoilState(modalState);
 
   return (
     <header className="fixed w-full h-16 bg-white border-solid border-b border-downy-100 z-40">
@@ -39,16 +39,7 @@ const Header = () => {
         </Link>
         <SearchBar className="mx-auto sm:mx-0" />
         {currentUserAtom ? (
-          <>
-            {windowWidth < 640 ? (
-              <div className="fixed bottom-28 left-5 py-4 px-2 bg-white rounded-full shadow-sm shadow-gray-300">
-                <Navigation />
-              </div>
-            ) : (
-              <Navigation />
-              
-            )}
-          </>
+          <Navigation />
         ) : (
           <div
             className={
@@ -60,12 +51,12 @@ const Header = () => {
             <Button
               className="mr-3"
               label="Log In"
-              onClick={() => setModal(MODAL.LOGIN)}
+              onClick={() => setModalAtom(MODAL.LOGIN)}
             />
             <Button
               outlined
               label="Sign Up"
-              onClick={() => setModal(MODAL.SIGNUP)}
+              onClick={() => setModalAtom(MODAL.SIGNUP)}
             />
           </div>
         )}
