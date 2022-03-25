@@ -2,18 +2,31 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useRecoilValue } from 'recoil';
-import { currentUserState } from '@recoil/atoms';
-import { HomeIcon, ChatIcon, BellIcon } from '@heroicons/react/outline';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import useWindowDimensions from '@hooks/useWindowDimensions';
+import { currentUserState, navigationState } from '@recoil/atoms';
+import {
+  ChevronUpIcon,
+  HomeIcon,
+  ChatIcon,
+  BellIcon,
+} from '@heroicons/react/outline';
 import ProfileMenu from './ProfileMenu';
 
 const Navigation = () => {
+  const { width: windowWidth } = useWindowDimensions();
   const currentUserAtom = useRecoilValue(currentUserState);
+  const [navigationAtom, setNavigationAtom] = useRecoilState(navigationState);
   const [profileMenu, setProfileMenu] = useState(false);
   const router = useRouter();
 
-  return (
-    <nav className="flex flex-col items-center sm:flex-row">
+  const nav = (
+    <nav className="flex flex-col sm:flex-row">
+      {windowWidth < 640 && (
+        <div className="nav-btn" onClick={() => setNavigationAtom(true)}>
+          <ChevronUpIcon />
+        </div>
+      )}
       <div
         className={`nav-btn${
           router.pathname === '/' && !profileMenu ? ' pointer-events-none' : ''
@@ -30,16 +43,12 @@ const Navigation = () => {
         </Link>
       </div>
       <div className="nav-btn">
-        <button>
-          <ChatIcon />
-        </button>
+        <ChatIcon />
       </div>
       <div className="nav-btn">
-        <button>
-          <BellIcon />
-        </button>
+        <BellIcon />
       </div>
-      <div className={`relative flex w-11 h-11 p-2 rounded-full`}>
+      <div className="relative flex w-11 h-11 p-2 rounded-full">
         <div
           className={`absolute w-9 h-9 top-1/2 left-1/2 opacity-0 transform -translate-x-1/2 -translate-y-1/2 rounded-full border-solid border-2 border-downy ease-in duration-200${
             profileMenu ? ' scale-90 opacity-100' : ''
@@ -58,14 +67,39 @@ const Navigation = () => {
             objectFit="contain"
           />
         </div>
-        {profileMenu && (
-          <>
-            <ProfileMenu close={() => setProfileMenu(false)} />
-          </>
+        {windowWidth > 639 && profileMenu && (
+          <ProfileMenu close={() => setProfileMenu(false)} />
         )}
       </div>
     </nav>
   );
-};
 
+  return (
+    <>
+      {windowWidth < 640 ? (
+        <>
+          {navigationAtom && (
+            <div
+              className="fixed top-0 left-0 w-screen h-screen"
+              onClick={() => setNavigationAtom(false)}
+            />
+          )}
+          <div className="fixed bottom-28 left-5 w-12 h-12">
+            <div
+              className={`flex justify-center fixed bottom-28 left-5 w-12 ${
+                navigationAtom ? 'h-48 pb-11 items-center' : 'h-12 pt-0.5 '
+              } bg-white rounded-full shadow-sm overflow-hidden shadow-gray-300 ease-in duration-200`}
+            >
+              {nav}
+            </div>
+            {profileMenu && <ProfileMenu close={() => setProfileMenu(false)} />}
+          </div>
+        </>
+      ) : (
+        <>{nav}</>
+      )}
+    </>
+  );
+};
+// ULIT lol
 export default Navigation;

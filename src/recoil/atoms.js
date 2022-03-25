@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 
 export const navigationState = atom({
   key: 'navigationState',
-  default: true,
+  default: false,
 });
 
 export const currentUserState = atom({
