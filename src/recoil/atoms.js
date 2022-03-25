@@ -1,5 +1,10 @@
 import { atom } from 'recoil';
 
+export const navigationState = atom({
+  key: 'navigationState',
+  default: true,
+});
+
 export const currentUserState = atom({
   key: 'currentUserState',
   default: null,
