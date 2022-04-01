@@ -15,7 +15,7 @@ export const ChangeDisplayPicture: FC<Props> = ({
     <>
       <div
         className="fixed top-0 left-0 w-screen h-screen"
-        onClick={() => close()}
+        onClick={close}
       />
       <div className="fixed top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-fit h-fit bg-white rounded-sm shadow-sm shadow-gray-300 z-50">
         <h2 className="text-lg font-bold py-6 px-8">Change Display Picture</h2>
