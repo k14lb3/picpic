@@ -35,7 +35,7 @@ const Profile: NextPage = () => {
     if (router.isReady) {
       fetchUser();
     }
-  }, [router]);
+  }, [router, currentUserAtom]);
 
   return splash ? (
     <Splash />

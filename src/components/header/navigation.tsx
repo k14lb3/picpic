@@ -24,7 +24,7 @@ export const Navigation: FC = () => {
     if (!navigationAtom) {
       setProfileMenu(false);
     }
-  }, [windowWidth]);
+  }, [windowWidth, navigationAtom]);
 
   const nav = (
     <nav className="flex flex-col sm:flex-row">

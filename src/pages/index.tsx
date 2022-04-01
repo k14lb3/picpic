@@ -8,20 +8,26 @@ import { deleteUnverifiedUsers } from '@/utils/helpers';
 
 const Home: NextPage = () => {
   const currentUserAtom = useRecoilValue(currentUserState);
-  const [splash, setSplash] = useState<boolean>(true);
+  const [splash, setSplash] = useState<boolean>(false);
 
-  useEffect(() => {
-    const checkUnverifiedUsers = async () => {
-      if (!currentUserAtom) {
-        await deleteUnverifiedUsers();
-      }
+  useEffect(
+    () => {
+      const checkUnverifiedUsers = async () => {
+        setSplash(true);
 
-      setSplash(false);
+        if (!currentUserAtom) {
+          await deleteUnverifiedUsers();
+        }
 
-    };
+        setSplash(false);
+      };
 
-    checkUnverifiedUsers();
-  }, []);
+      checkUnverifiedUsers();
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   return splash ? <Splash /> : <Layout></Layout>;
 };
